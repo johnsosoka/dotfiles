@@ -26,5 +26,8 @@ brew "vim"
 brew "watch"
 brew "wget"
 
+# Fonts
+cask "font-meslo-lg-nerd-font"
+
 # Applications
 cask "claude-code"

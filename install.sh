@@ -39,7 +39,8 @@ else
 fi
 
 # --- Powerlevel10k ---
-P10K_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+P10K_DIR="$ZSH_CUSTOM/themes/powerlevel10k"
 if [[ ! -d "$P10K_DIR" ]]; then
   info "Installing Powerlevel10k..."
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K_DIR"
@@ -48,24 +49,21 @@ else
 fi
 
 # --- Custom ZSH Plugins ---
-ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-
-declare -A plugins=(
-  [zsh-autosuggestions]="https://github.com/zsh-users/zsh-autosuggestions.git"
-  [zsh-syntax-highlighting]="https://github.com/zsh-users/zsh-syntax-highlighting.git"
-  [zsh-completions]="https://github.com/zsh-users/zsh-completions.git"
-  [zsh-history-substring-search]="https://github.com/zsh-users/zsh-history-substring-search.git"
-)
-
-for plugin in "${!plugins[@]}"; do
-  plugin_dir="$ZSH_CUSTOM/plugins/$plugin"
+install_plugin() {
+  local name="$1" url="$2"
+  local plugin_dir="$ZSH_CUSTOM/plugins/$name"
   if [[ ! -d "$plugin_dir" ]]; then
-    info "Installing $plugin..."
-    git clone --depth=1 "${plugins[$plugin]}" "$plugin_dir"
+    info "Installing $name..."
+    git clone --depth=1 "$url" "$plugin_dir"
   else
-    ok "$plugin already installed"
+    ok "$name already installed"
   fi
-done
+}
+
+install_plugin zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions.git
+install_plugin zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting.git
+install_plugin zsh-completions https://github.com/zsh-users/zsh-completions.git
+install_plugin zsh-history-substring-search https://github.com/zsh-users/zsh-history-substring-search.git
 
 # --- Symlinks ---
 info "Creating symlinks..."
