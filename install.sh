@@ -71,5 +71,28 @@ link_file "$DOTFILES_DIR/zsh/.zshrc"    "$HOME/.zshrc"
 link_file "$DOTFILES_DIR/zsh/.p10k.zsh" "$HOME/.p10k.zsh"
 link_file "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 
+# --- Git identity (machine-local, kept out of the public repo) ---
+GITCONFIG_LOCAL="$HOME/.gitconfig.local"
+if [[ -f "$GITCONFIG_LOCAL" ]]; then
+  ok "Git identity already configured ($GITCONFIG_LOCAL)"
+elif [[ ! -t 0 ]]; then
+  warn "Non-interactive shell; skipping git identity prompt."
+  warn "Create $GITCONFIG_LOCAL with a [user] name/email before committing."
+else
+  info "Configuring git identity (written to $GITCONFIG_LOCAL, never committed)"
+  read -r -p "  Git user name [John Sosoka]: " git_name
+  git_name="${git_name:-John Sosoka}"
+  git_email=""
+  while [[ -z "$git_email" ]]; do
+    read -r -p "  Git email: " git_email
+  done
+  cat > "$GITCONFIG_LOCAL" <<EOF
+[user]
+	name = ${git_name}
+	email = ${git_email}
+EOF
+  ok "Wrote git identity to $GITCONFIG_LOCAL"
+fi
+
 echo ""
 ok "dotfiles installed. Restart your shell or run: source ~/.zshrc"

@@ -1,8 +1,17 @@
-[user]
-	name = John Sosoka
-	email = open.source@sosoka.com
+# Identity (user.name / user.email) lives in ~/.gitconfig.local, which is
+# prompted for by install.sh and never committed to this public repo.
+[include]
+	path = ~/.gitconfig.local
 [core]
 	editor = vim
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	line-numbers = true
+[merge]
+	conflictStyle = zdiff3
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

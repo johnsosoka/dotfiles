@@ -22,5 +22,11 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+# pipx / Poetry: user-installed CLI apps live in ~/.local/bin
+export PATH="$HOME/.local/bin:$PATH"
+
+# rbenv: activate brew-managed Ruby (no-op if rbenv isn't installed)
+command -v rbenv >/dev/null && eval "$(rbenv init - zsh)"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
