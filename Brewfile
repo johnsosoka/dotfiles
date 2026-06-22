@@ -3,9 +3,12 @@
 # Install/refresh with:  brew bundle --file=Brewfile
 # =====================================================================
 
+# --- Taps ---
+tap "hashicorp/tap"   # Terraform (removed from homebrew-core under the BSL license change)
+
 # --- Cloud / Infra ---
 brew "awscli"
-brew "terraform"
+brew "hashicorp/tap/terraform"
 brew "gh"
 
 # --- Python (brew-managed) ---
@@ -66,8 +69,6 @@ cask "pycharm"
 
 # --- Notes & productivity ---
 cask "obsidian"
-cask "notion"
-cask "joplin"
 
 # --- Security & network ---
 cask "tailscale-app"

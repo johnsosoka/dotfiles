@@ -27,6 +27,14 @@ else
   ok "Homebrew already installed"
 fi
 
+# Terraform lives in HashiCorp's tap (removed from homebrew-core under the BSL
+# license change). Homebrew 6+ requires trusting third-party taps before install,
+# so tap + trust it before `brew bundle` runs.
+brew tap hashicorp/tap >/dev/null 2>&1 || true
+if brew help trust &>/dev/null; then
+  brew trust --tap hashicorp/tap >/dev/null 2>&1 || true
+fi
+
 info "Installing Homebrew packages..."
 brew bundle --file="$DOTFILES_DIR/Brewfile"
 

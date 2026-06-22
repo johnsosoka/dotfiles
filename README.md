@@ -83,7 +83,7 @@ and lets each machine (personal vs. work) use a different email.
 | Category | Apps |
 |---|---|
 | Dev tools | `claude-code`, `iterm2`, `docker-desktop`, `intellij-idea`, `pycharm` |
-| Notes & productivity | `obsidian`, `notion`, `joplin` |
+| Notes & productivity | `obsidian` |
 | Security & network | `tailscale-app`, `gpg-suite`, `yubico-yubikey-manager` |
 | Browsers & comms | `google-chrome`, `firefox`, `slack`, `zoom` |
 | Fonts | `font-meslo-lg-nerd-font` |
