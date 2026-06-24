@@ -1,33 +1,82 @@
-# CLI Tools
+# =====================================================================
+# Brewfile — portable macOS dev environment
+# Install/refresh with:  brew bundle --file=Brewfile
+# =====================================================================
+
+# --- Taps ---
+tap "hashicorp/tap"   # Terraform (removed from homebrew-core under the BSL license change)
+
+# --- Cloud / Infra ---
 brew "awscli"
-brew "coreutils"
-brew "curl"
-brew "exiftool"
-brew "findutils"
-brew "gawk"
+brew "hashicorp/tap/terraform"
 brew "gh"
+
+# --- Python (brew-managed) ---
+brew "python@3.12"   # primary interpreter (provides python3)
+brew "pipx"          # install Python CLI apps in isolated venvs
+brew "poetry"        # project/dependency management
+
+# --- Ruby ---
+brew "rbenv"         # Ruby version management (shadows macOS system ruby)
+
+# --- Git ---
 brew "git"
-brew "git-delta"
+brew "git-delta"     # better diffs — wired up in git/.gitconfig
 brew "git-lfs"
-brew "glow"
-brew "gnu-sed"
-brew "gnu-tar"
-brew "grep"
-brew "jq"
+brew "git-filter-repo"
 brew "lazygit"
+
+# --- Dev / lint essentials ---
+brew "pre-commit"
+brew "shellcheck"
+brew "yamllint"
+
+# --- Docs & diagrams ---
+brew "pandoc"
+brew "graphviz"
+brew "mermaid-cli"
+brew "d2"
+brew "weasyprint"
+brew "exiftool"
+
+# --- General CLI ---
+brew "curl"
+brew "wget"
+brew "rsync"
+brew "jq"
+brew "tree"
+brew "watch"
+brew "vim"           # latest vim (shadows macOS system vim)
+brew "glow"
+
+# --- Runtimes ---
 brew "node"
 brew "openjdk"
-brew "poetry"
-brew "pyenv"
-brew "rsync"
-brew "terraform"
-brew "tree"
-brew "vim"
-brew "watch"
-brew "wget"
 
-# Fonts
+# =====================================================================
+# Casks — fonts, CLI apps, and GUI apps
+# =====================================================================
+
+# --- Fonts ---
 cask "font-meslo-lg-nerd-font"
 
-# Applications
+# --- Dev tools ---
 cask "claude-code"
+cask "iterm2"
+cask "docker-desktop"
+cask "intellij-idea"
+cask "pycharm"
+
+# --- Notes & productivity ---
+cask "obsidian"
+
+# --- Security & network ---
+cask "tailscale-app"
+cask "gpg-suite"
+cask "yubico-yubikey-manager"
+
+# --- Browsers & comms ---
+cask "google-chrome"
+cask "firefox"
+cask "slack"
+cask "zoom"
