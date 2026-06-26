@@ -85,7 +85,7 @@ and lets each machine (personal vs. work) use a different email.
 | Dev tools | `claude-code`, `iterm2`, `docker-desktop`, `intellij-idea`, `pycharm` |
 | Notes & productivity | `obsidian` |
 | Security & network | `tailscale-app`, `gpg-suite`, `yubico-yubikey-manager` |
-| Browsers & comms | `google-chrome`, `firefox`, `slack`, `zoom` |
+| Browsers & comms | `google-chrome`, `firefox`, `zoom` |
 | Fonts | `font-meslo-lg-nerd-font` |
 
 ## Customization

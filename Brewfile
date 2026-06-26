@@ -78,5 +78,4 @@ cask "yubico-yubikey-manager"
 # --- Browsers & comms ---
 cask "google-chrome"
 cask "firefox"
-cask "slack"
 cask "zoom"
