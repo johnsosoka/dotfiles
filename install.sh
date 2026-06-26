@@ -27,6 +27,24 @@ else
   ok "Homebrew already installed"
 fi
 
+# A fresh Homebrew install does NOT add brew to the current shell's PATH, so load
+# its environment here (covers Apple Silicon /opt/homebrew and Intel /usr/local)
+# before running any brew command below.
+if ! command -v brew &>/dev/null; then
+  for brew_bin in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+    if [[ -x "$brew_bin" ]]; then
+      eval "$("$brew_bin" shellenv)"
+      break
+    fi
+  done
+fi
+
+if ! command -v brew &>/dev/null; then
+  warn "Homebrew is not on PATH after installation; cannot continue."
+  exit 1
+fi
+ok "Homebrew ready ($(command -v brew))"
+
 # Terraform lives in HashiCorp's tap (removed from homebrew-core under the BSL
 # license change). Homebrew 6+ requires trusting third-party taps before install,
 # so tap + trust it before `brew bundle` runs.
@@ -36,12 +54,16 @@ if brew help trust &>/dev/null; then
 fi
 
 info "Installing Homebrew packages..."
-brew bundle --file="$DOTFILES_DIR/Brewfile"
+if ! brew bundle --file="$DOTFILES_DIR/Brewfile"; then
+  warn "Some Homebrew packages failed to install. Continuing with shell setup."
+  warn "Re-run later: brew bundle --file=\"$DOTFILES_DIR/Brewfile\""
+fi
 
 # --- Oh My Zsh ---
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
   info "Installing Oh My Zsh..."
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  # KEEP_ZSHRC=yes: don't let the installer create/replace ~/.zshrc — our symlink owns it.
+  KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 else
   ok "Oh My Zsh already installed"
 fi
