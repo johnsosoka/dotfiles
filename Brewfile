@@ -71,9 +71,7 @@ cask "pycharm"
 cask "obsidian"
 
 # --- Security & network ---
-cask "tailscale-app"
 cask "gpg-suite"
-cask "yubico-yubikey-manager"
 
 # --- Browsers & comms ---
 cask "google-chrome"
