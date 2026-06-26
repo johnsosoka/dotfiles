@@ -11,13 +11,49 @@ link_file() {
   local src="$1" dst="$2"
   if [[ -L "$dst" ]]; then
     rm "$dst"
-  elif [[ -f "$dst" ]]; then
-    warn "Backing up existing $dst to ${dst}.bak"
-    mv "$dst" "${dst}.bak"
+  elif [[ -e "$dst" ]]; then
+    local backup
+    backup="${dst}.bak.$(date +%Y%m%d%H%M%S)"
+    warn "Backing up existing $dst to $backup"
+    mv "$dst" "$backup"
   fi
   ln -s "$src" "$dst"
   ok "Linked $dst -> $src"
 }
+
+# --- Pre-flight safety checks ---
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  warn "This installer targets macOS only (detected $(uname -s)). Aborting."
+  exit 1
+fi
+if [[ "$(id -u)" -eq 0 ]]; then
+  warn "Run as your normal user, not root/sudo — Homebrew refuses to run as root. Aborting."
+  exit 1
+fi
+
+# --- Confirmation (skip with -y/--yes) ---
+ASSUME_YES=0
+if [[ "${1:-}" == "-y" || "${1:-}" == "--yes" ]]; then
+  ASSUME_YES=1
+fi
+
+if [[ "$ASSUME_YES" -eq 0 && -t 0 ]]; then
+  echo "This will configure your environment from: $DOTFILES_DIR"
+  echo "  - Install Homebrew (if missing) + packages and apps from the Brewfile"
+  echo "  - Install Oh My Zsh, Powerlevel10k, and zsh plugins"
+  echo "  - Symlink ~/.zshrc, ~/.p10k.zsh, ~/.gitconfig (existing files are backed up)"
+  echo "  - Prompt for your git name/email (saved to ~/.gitconfig.local)"
+  for f in "$HOME/.zshrc" "$HOME/.gitconfig" "$HOME/.p10k.zsh"; do
+    if [[ -e "$f" && ! -L "$f" ]]; then
+      warn "Existing $f will be backed up and replaced — merge anything you need from its .bak afterward."
+    fi
+  done
+  read -r -p "Proceed? [y/N] " reply || reply=""
+  if [[ ! "$reply" =~ ^[Yy]$ ]]; then
+    info "Aborted; nothing changed."
+    exit 0
+  fi
+fi
 
 # --- Homebrew ---
 if ! command -v brew &>/dev/null; then
